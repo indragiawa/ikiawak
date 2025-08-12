@@ -1,0 +1,8 @@
+body {
+  font-family: Inter, Arial, sans-serif;
+}
+#calendar .fc .fc-daygrid-day.fc-day-today {
+  background: #f8f9fa;
+}
+
+

@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Kalender Kegiatan</h3>
+  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">Tambah Kegiatan</button>
+</div>
+
+<div id="calendar" class="card p-3"></div>
+
+<!-- Modal: show events for a clicked date -->
+<div class="modal fade" id="eventsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Kegiatan pada <span id="modalDate"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: create new task -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" method="POST" action="{{ url_for('create_task') }}">
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Kegiatan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2">
+          <label class="form-label">Judul</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Deskripsi</label>
+          <textarea name="description" class="form-control"></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Mulai</label>
+          <input type="datetime-local" name="start" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Selesai</label>
+          <input type="datetime-local" name="end" class="form-control" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Kategori</label>
+          <select name="category" class="form-select">
+            <option value="">Umum</option>
+            <option>Pekerjaan</option>
+            <option>Pribadi</option>
+            <option>Sekolah</option>
+            <option>Lain-lain</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-primary" type="submit">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+

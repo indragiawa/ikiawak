@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Daftar Kegiatan</h3>
+  <a class="btn btn-primary" href="{{ url_for('calendar_view') }}">Kembali ke Kalender</a>
+</div>
+
+{% if edit_task %}
+<div class="card mb-3">
+  <div class="card-body">
+    <h5>Edit Kegiatan</h5>
+    <form method="POST" action="{{ url_for('edit_task', task_id=edit_task.id) }}">
+      <div class="mb-2">
+        <label class="form-label">Judul</label>
+        <input class="form-control" name="title" required value="{{ edit_task.title }}">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Deskripsi</label>
+        <textarea class="form-control" name="description">{{ edit_task.description }}</textarea>
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Mulai</label>
+        <input type="datetime-local" class="form-control" name="start"
+               value="{{ edit_task.start_time.strftime('%Y-%m-%dT%H:%M') }}">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Selesai</label>
+        <input type="datetime-local" class="form-control" name="end"
+               value="{{ edit_task.end_time.strftime('%Y-%m-%dT%H:%M') }}">
+      </div>
+      <div class="mb-2">
+        <label class="form-label">Kategori</label>
+        <input class="form-control" name="category" value="{{ edit_task.category }}">
+      </div>
+      <button class="btn btn-success" type="submit">Update</button>
+      <a href="{{ url_for('tasks_view') }}" class="btn btn-secondary">Batal</a>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<div class="list-group">
+  {% for t in tasks %}
+  <div class="list-group-item d-flex justify-content-between align-items-start">
+    <div>
+      <div class="fw-bold">{{ t.title }} <small class="text-muted">({{ t.category or 'Umum' }})</small></div>
+      <div>{{ t.start_time.strftime('%d %b %Y %H:%M') }} — {{ t.end_time.strftime('%d %b %Y %H:%M') }}</div>
+      {% if t.description %}
+      <div class="text-muted small">{{ t.description }}</div>
+      {% endif %}
+    </div>
+    <div class="btn-group-vertical">
+      <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit_task', task_id=t.id) }}">Edit</a>
+      <form method="POST" action="{{ url_for('delete_task', task_id=t.id) }}" onsubmit="return confirm('Hapus kegiatan ini?')">
+        <button class="btn btn-sm btn-outline-danger mt-1" type="submit">Hapus</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-muted">Belum ada kegiatan.</div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+
